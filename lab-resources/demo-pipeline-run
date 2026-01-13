@@ -1,0 +1,22 @@
+apiVersion: tekton.dev/v1
+kind: PipelineRun
+metadata:
+  generateName: java-app-build-run-
+  namespace: user${YOUR_USER_NUMBER}-ai-agent
+spec:
+  taskRunTemplate:
+    serviceAccountName: pipeline
+  pipelineRef:
+    name: java-app-build
+  params:
+    - name: NAMESPACE
+      value: user${YOUR_USER_NUMBER}-ai-agent
+  workspaces:
+    - name: shared-workspace
+      volumeClaimTemplate:
+        spec:
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: 1Gi

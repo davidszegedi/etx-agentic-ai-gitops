@@ -1,0 +1,24 @@
+apiVersion: tekton.dev/v1
+kind: PipelineRun
+metadata:
+  generateName: agent-service-build-run-
+  namespace: user[YOUR_USER_NUMBER]-ai-agent
+spec:
+  taskRunTemplate:
+    serviceAccountName: pipeline
+  pipelineRef:
+    name: agent-service-build
+  params:
+    - name: GIT_REPO
+      value: "https://github.com/[YOUR_FORK_LOCATION]"
+    - name: GIT_REVISION
+      value: "main"
+  workspaces:
+    - name: workspace
+      volumeClaimTemplate:
+        spec:
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: 1Gi
